@@ -29,30 +29,39 @@ jobs:
           paths:
             - .
 
-  docker-image-create:
+  docker-image-create-and-push:
 
     machine: true
 
     steps:
       - attach_workspace:
-          at: ~/ticketing-app
-      - run:
-          name: Create Docker image and tag it
-          command: docker build -t 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest ~/ticketing-app
+          at: /tmp/workspace
+            - run: ls -a /tmp/workspace
+            - run:
+                name: Create Docker image and push to ECR
+                command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com &&
+                  docker build -t ticketingapp ~/ticketing-app &&
+                  docker tag ticketingapp:latest 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest &&
+                  docker push 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
+#      - attach_workspace:
+#          at: ~/ticketing-app
+#      - run:
+#          name: Create Docker image and tag it
+#          command: docker build -t 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest ~/ticketing-app
 
-  docker-image-push:
-
-    machine: true
-
-    steps:
-      - attach_workspace:
-          at: ~/ticketing-app
-      - run:
-          name: Login to ECR
-          command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com
-      - run:
-          name: Push the image to ECR
-          command: docker push 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
+#  docker-image-push:
+#
+#    machine: true
+#
+#    steps:
+#      - attach_workspace:
+#          at: ~/ticketing-app
+#      - run:
+#          name: Login to ECR
+#          command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com
+#      - run:
+#          name: Push the image to ECR
+#          command: docker push 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
 
   deploy:
 
@@ -73,12 +82,9 @@ workflows:
   build_and_deploy:
     jobs:
       - prep-dependencies
-      - docker-image-create:
+      - docker-image-create-and-push:
           requires:
             - prep-dependencies
-      - docker-image-push:
-          requires:
-            - docker-image-create
       - deploy:
           requires:
-            - docker-image-push
+            - docker-image-create-and-push

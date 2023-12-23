@@ -58,12 +58,13 @@ workflows:
   build_and_deploy:
     jobs:
       - prep-dependencies
-      - docker-image-create:
+      - docker-image-and-publish:
           requires:
             - prep-dependencies
-      - docker-image-push:
-          requires:
-            - docker-image-create
+#      - docker-image-push:
+#          requires:
+#            - docker-image-create
       - deploy:
           requires:
-            - docker-image-push
+#            - docker-image-push
+            - docker-image-and-publish

@@ -79,7 +79,7 @@ workflows:
       - prep-dependencies
       - docker-image-create:
           requires:
-            - build
+            - prep-dependencies
       - docker-image-push:
           requires:
             - docker-image-create

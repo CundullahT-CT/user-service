@@ -71,7 +71,7 @@ jobs:
       - run:
           name: Execute Deployment Script
           command: |
-            ssh -o "StrictHostKeyChecking=no" ec2-3-72-76-206.eu-central-1.compute.amazonaws.com <<'ENDSSH'
+            ssh -o "StrictHostKeyChecking=no" ec2-3-79-246-83.eu-central-1.compute.amazonaws.com <<'ENDSSH'
             /bin/bash bin/deploy_image.sh
             ENDSSH
 

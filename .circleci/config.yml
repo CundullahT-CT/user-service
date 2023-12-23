@@ -65,7 +65,9 @@ jobs:
 
   deploy:
 
-    machine: true
+    docker:
+      #specify the version you desire here
+      - image: circleci/node:10.0.0
 
     steps:
       - run:

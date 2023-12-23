@@ -1,92 +1,56 @@
 version: 2
-
 jobs:
-  prep-dependencies:
-
+  build:
     docker:
+      # specify the version you desire here
       - image: circleci/openjdk:11-jdk
-
-    working_directory: ~/ticketing-app
-
+    working_directory: /tmp/workspace
     steps:
       - checkout
-      - run: cd ~
-      - run: mkdir ticketing-app
-
+      - run: mkdir -p /tmp/workspace
+      # Download and cache dependencies
       - restore_cache:
           keys:
-            - ticketing-dependencies-{{ checksum "pom.xml" }}
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-      - run: mvn clean install
-
+      - run: mvn clean install -DskipTests
       - save_cache:
           paths:
             - ~/.m2
-          key: ticketing-dependencies-{{ checksum "pom.xml" }}
-
+          key: v1-dependencies-{{ checksum "pom.xml" }}
       - persist_to_workspace:
-          root: ~/ticketing-app
-          paths:
-            - .
-
-  docker-image-create-and-push:
-
+          root: /tmp/workspace
+          paths: .
+  docker-image-and-publish:
     machine: true
-
     steps:
       - attach_workspace:
-          at: ~/ticketing-app
-      - run: ls -a ~/ticketing-app
+          at: /tmp/workspace
+      - run: ls -a /tmp/workspace
       - run:
           name: Create Docker image and push to ECR
-          command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com &&
-            docker build -t ticketingapp ~/ticketing-app &&
-            docker tag ticketingapp:latest 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest &&
-            docker push 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
-#      - attach_workspace:
-#          at: ~/ticketing-app
-#      - run:
-#          name: Create Docker image and tag it
-#          command: docker build -t 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest ~/ticketing-app
-
-#  docker-image-push:
-#
-#    machine: true
-#
-#    steps:
-#      - attach_workspace:
-#          at: ~/ticketing-app
-#      - run:
-#          name: Login to ECR
-#          command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com
-#      - run:
-#          name: Push the image to ECR
-#          command: docker push 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
-
-  deploy:
-
+          command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com && docker build -t ticketingapp /tmp/workspace && docker tag ticketingapp:latest 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest && 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
+  deploy-job:
     docker:
       #specify the version you desire here
       - image: circleci/node:10.0.0
-
     steps:
       - run:
           name: Execute Deployment Script
           command: |
             ssh -o "StrictHostKeyChecking=no" ubuntu@ec2-3-71-176-242.eu-central-1.compute.amazonaws.com <<'ENDSSH'
             /bin/bash bin/deploy_image.sh
-            ENDSSH
-
+            docker ps
 workflows:
-
   version: 2
-
-  build_and_deploy:
+  build_and_test:
     jobs:
-      - prep-dependencies
-      - docker-image-create-and-push:
+      - build
+      - docker-image-and-publish:
           requires:
-            - prep-dependencies
-      - deploy:
+            - build
+      - deploy-job:
           requires:
-            - docker-image-create-and-push
+            - docker-image-and-publish

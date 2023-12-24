@@ -38,7 +38,7 @@ jobs:
           at: ~/ticketing-app
       - run:
           name: Go to app location
-          command: ~/ticketing-app
+          command: cd ~/ticketing-app
       - run:
           name: Create Docker image and tag it
           command: docker build 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp

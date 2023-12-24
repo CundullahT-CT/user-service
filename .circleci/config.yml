@@ -29,7 +29,7 @@ jobs:
           paths:
             - .
 
-  docker-image-create:
+  docker-image-create-and-push:
 
     machine: true
 
@@ -42,17 +42,6 @@ jobs:
       - run:
           name: Create Docker image
           command: docker build -t 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest ~/ticketing-app
-
-  docker-image-push:
-
-    machine: true
-
-    steps:
-      - attach_workspace:
-          at: ~/ticketing-app
-      - run:
-          name: Go to app location
-          command: cd ~/ticketing-app
       - run:
           name: Login to ECR
           command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com
@@ -79,12 +68,9 @@ workflows:
   build_and_deploy:
     jobs:
       - prep
-      - docker-image-create:
+      - docker-image-create-and-push:
           requires:
             - prep
-      - docker-image-push:
-          requires:
-            - docker-image-create
       - deploy:
           requires:
-            - docker-image-push
+            - docker-image-create-and-push

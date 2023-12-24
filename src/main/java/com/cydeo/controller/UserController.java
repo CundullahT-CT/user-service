@@ -48,7 +48,7 @@ public class UserController {
                 .ok(ResponseWrapper.builder()
                         .success(true)
                         .statusCode(HttpStatus.OK)
-                        .message("User is successfully retrieved.")
+                        .message("User is successfully retrieved")
                         .data(foundUser)
                         .build());
 

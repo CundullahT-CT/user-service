@@ -41,10 +41,7 @@ jobs:
           command: cd ~/ticketing-app
       - run:
           name: Create Docker image
-          command: docker build -t 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp ~/ticketing-app
-      - run:
-          name: Tag the docker image
-          command: docker tag 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest
+          command: docker build -t 309373202297.dkr.ecr.eu-central-1.amazonaws.com/ticketingapp:latest ~/ticketing-app
 
   docker-image-push:
 
@@ -53,6 +50,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/ticketing-app
+      - run:
+          name: Go to app location
+          command: cd ~/ticketing-app
       - run:
           name: Login to ECR
           command: aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 309373202297.dkr.ecr.eu-central-1.amazonaws.com

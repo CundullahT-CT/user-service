@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
 
         Integer projectCount = 0;
 
-        ResponseEntity<ProjectResponseDTO> projectResponse = projectClient.getCountByAssignedManager(getAccessToken(), username);
+        ResponseEntity<ProjectResponseDTO> projectResponse = projectClient.getNonCompletedCountByAssignedManager(getAccessToken(), username);
 
         if (Objects.requireNonNull(projectResponse.getBody()).isSuccess()) {
             projectCount = projectResponse.getBody().getData();
@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
 
         Integer taskCount = 0;
 
-        ResponseEntity<TaskResponseDTO> taskResponse = taskClient.getCountByAssignedEmployee(getAccessToken(), username);
+        ResponseEntity<TaskResponseDTO> taskResponse = taskClient.getNonCompletedCountByAssignedEmployee(getAccessToken(), username);
 
         if (Objects.requireNonNull(taskResponse.getBody()).isSuccess()) {
             taskCount = taskResponse.getBody().getData();

@@ -39,6 +39,7 @@ eureka:
   instance:
     status-page-url-path: ${management.context-path}/info
     health-check-url-path: ${management.context-path}/health
+    hostname: 3.72.39.193
   client:
     serviceUrl:
       defaultZone: http://3.72.87.233:8761/eureka/

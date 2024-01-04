@@ -143,8 +143,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @CircuitBreaker(name = "project-service")
-    @Retry(name = "project-service")
     private void checkManagerConnections(String username) {
 
         Integer projectCount = 0;
@@ -163,8 +161,6 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @CircuitBreaker(name = "task-service")
-    @Retry(name = "task-service")
     private void checkEmployeeConnections(String username) {
 
         Integer taskCount = 0;

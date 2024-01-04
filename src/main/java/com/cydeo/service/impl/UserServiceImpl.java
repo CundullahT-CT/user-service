@@ -11,6 +11,8 @@ import com.cydeo.repository.UserRepository;
 import com.cydeo.service.KeycloakService;
 import com.cydeo.service.UserService;
 import com.cydeo.util.MapperUtil;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -119,44 +121,72 @@ public class UserServiceImpl implements UserService {
         User userToDelete = userRepository.findByUserNameAndIsDeleted(username, false)
                 .orElseThrow(() -> new UserNotFoundException("User does not exist."));
 
-        checkUserConnections(userToDelete.getRole().getDescription(), username);
+        checkUserConnections(userToDelete);
 
         return userToDelete;
 
     }
 
-    private void checkUserConnections(String role, String username) {
+    private void checkUserConnections(User userToDelete) {
 
-        Integer projectCount = 0;
-        Integer taskCount = 0;
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        KeycloakAuthenticationToken keycloakAuthenticationToken = (KeycloakAuthenticationToken) authentication;
-        String accessToken = "Bearer " + keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getTokenString();
+        String role = userToDelete.getRole().getDescription();
+        String username = userToDelete.getUserName();
 
         switch (role) {
             case "Manager":
-                ResponseEntity<ProjectResponseDTO> projectResponse = projectClient.getCountByAssignedManager(accessToken, username);
-                if (Objects.requireNonNull(projectResponse.getBody()).isSuccess()) {
-                    projectCount = projectResponse.getBody().getData();
-                } else {
-                    throw new ProjectCountNotRetrievedException("Project count cannot be retrieved.");
-                }
+                checkManagerConnections(username);
                 break;
             case "Employee":
-                ResponseEntity<TaskResponseDTO> taskResponse = taskClient.getCountByAssignedEmployee(accessToken, username);
-                if (Objects.requireNonNull(taskResponse.getBody()).isSuccess()) {
-                    taskCount = taskResponse.getBody().getData();
-                } else {
-                    throw new TaskCountNotRetrievedException("Task count cannot be retrieved.");
-                }
+                checkEmployeeConnections(username);
                 break;
         }
 
-        if (projectCount > 0 || taskCount > 0) {
-            throw new UserCanNotBeDeletedException("User can not be deleted. User is linked to a project(s) or a task(s).");
+    }
+
+    @CircuitBreaker(name = "project-service")
+    @Retry(name = "project-service")
+    private void checkManagerConnections(String username) {
+
+        Integer projectCount = 0;
+
+        ResponseEntity<ProjectResponseDTO> projectResponse = projectClient.getCountByAssignedManager(getAccessToken(), username);
+
+        if (Objects.requireNonNull(projectResponse.getBody()).isSuccess()) {
+            projectCount = projectResponse.getBody().getData();
+        } else {
+            throw new ProjectCountNotRetrievedException("Project count cannot be retrieved.");
         }
 
+        if (projectCount > 0) {
+            throw new UserCanNotBeDeletedException("User can not be deleted. User is linked to a project(s)");
+        }
+
+    }
+
+    @CircuitBreaker(name = "task-service")
+    @Retry(name = "task-service")
+    private void checkEmployeeConnections(String username) {
+
+        Integer taskCount = 0;
+
+        ResponseEntity<TaskResponseDTO> taskResponse = taskClient.getCountByAssignedEmployee(getAccessToken(), username);
+
+        if (Objects.requireNonNull(taskResponse.getBody()).isSuccess()) {
+            taskCount = taskResponse.getBody().getData();
+        } else {
+            throw new TaskCountNotRetrievedException("Task count cannot be retrieved.");
+        }
+
+        if (taskCount > 0) {
+            throw new UserCanNotBeDeletedException("User can not be deleted. User is linked to a task(s)");
+        }
+
+    }
+
+    private String getAccessToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        KeycloakAuthenticationToken keycloakAuthenticationToken = (KeycloakAuthenticationToken) authentication;
+        return "Bearer " + keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getTokenString();
     }
 
 }

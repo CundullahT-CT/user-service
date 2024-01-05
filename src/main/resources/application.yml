@@ -15,9 +15,6 @@ spring:
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
 
-host:
-  ip: 3.72.39.193
-
 server:
   port: 8081
 
@@ -41,7 +38,7 @@ master:
 eureka:
   instance:
     preferIpAddress: true
-    ipAddress: ${host.ip}
+    ipAddress: ${HOST}
     status-page-url-path: ${management.context-path}/info
     health-check-url-path: ${management.context-path}/health
   client:
@@ -56,7 +53,7 @@ management:
     web:
       exposure:
         include: "*"
-  context-path: http://${host.ip}:${server.port}/actuator
+  context-path: http://${HOST}:${server.port}/actuator
 
 info:
   application:

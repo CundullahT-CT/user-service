@@ -37,6 +37,8 @@ master:
 
 eureka:
   instance:
+    preferIpAddress: true
+    ipAddress: 3.72.39.193
     status-page-url-path: ${management.context-path}/info
     health-check-url-path: ${management.context-path}/health
   client:

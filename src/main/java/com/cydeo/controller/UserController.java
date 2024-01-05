@@ -71,10 +71,10 @@ public class UserController {
     }
 
     @RolesAllowed({"Admin", "Manager"})
-    @GetMapping("/check/{userName}")
-    public ResponseEntity<ResponseWrapper> checkByUserName(@PathVariable("userName") String userName) {
+    @GetMapping("/check/{username}")
+    public ResponseEntity<ResponseWrapper> checkByUserName(@PathVariable("username") String username) {
 
-        boolean result = userService.checkByUserName(userName);
+        boolean result = userService.checkByUserName(username);
 
         return ResponseEntity
                 .ok(ResponseWrapper.builder()

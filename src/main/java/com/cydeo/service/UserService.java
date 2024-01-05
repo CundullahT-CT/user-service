@@ -10,7 +10,7 @@ public interface UserService {
 
     UserDTO readByUserName(String username);
     List<UserDTO> readAllUsers();
-    boolean checkByUserName(String userName);
+    boolean checkByUserName(String username);
 
     UserDTO update(String username, UserDTO userDTO);
     void delete(String username);

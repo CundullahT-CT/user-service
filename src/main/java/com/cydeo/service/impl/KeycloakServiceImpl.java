@@ -23,7 +23,6 @@ import static org.keycloak.admin.client.CreatedResponseUtil.getCreatedId;
 @Service
 public class KeycloakServiceImpl implements KeycloakService {
 
-
     private final KeycloakProperties keycloakProperties;
 
     public KeycloakServiceImpl(KeycloakProperties keycloakProperties) {

@@ -15,6 +15,9 @@ spring:
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
 
+host:
+  ip: 3.72.39.193
+
 server:
   port: 8081
 
@@ -24,7 +27,7 @@ keycloak:
   ssl-required: none
   resource: ticketing-app
   credentials:
-    secret: 7lRemM78PNtCkEeyaNwCMO5kfLUvwOCS
+    secret: H60klvIQaHbGzOE8yDTDknMp2D1oYBof
   use-resource-role-mappings: true
   bearer-only: true
 
@@ -37,9 +40,10 @@ master:
 
 eureka:
   instance:
+    preferIpAddress: true
+    ipAddress: ${host.ip}
     status-page-url-path: ${management.context-path}/info
     health-check-url-path: ${management.context-path}/health
-    hostname: 3.72.39.193
   client:
     serviceUrl:
       defaultZone: http://3.72.87.233:8761/eureka/
@@ -52,7 +56,15 @@ management:
     web:
       exposure:
         include: "*"
-  context-path: http://localhost:${server.port}/actuator
+  context-path: http://${host.ip}:${server.port}/actuator
+
+info:
+  application:
+    name: ${spring.application.name}
+    description: Ticketing Application User Service
+    version: '@project.version@'
+    spring-cloud-version: '@spring-cloud.version@'
+    spring-boot-version: '@project.parent.version@'
 
 resilience4j:
 

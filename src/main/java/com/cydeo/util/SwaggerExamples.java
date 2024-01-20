@@ -134,6 +134,34 @@ public class SwaggerExamples {
             "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
             "}";
 
+    public static final String USER_NOT_DELETED_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"User can not be deleted.\",\n" +
+            "  \"httpStatus\": \"CONFLICT\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
+    public static final String PROJECT_COUNT_NOT_RETRIEVED_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"Project count cannot be retrieved.\",\n" +
+            "  \"httpStatus\": \"INTERNAL_SERVER_ERROR\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
+    public static final String TASK_COUNT_NOT_RETRIEVED_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"Task count cannot be retrieved.\",\n" +
+            "  \"httpStatus\": \"INTERNAL_SERVER_ERROR\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
+    public static final String ROLE_NOT_FOUND_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": false,\n" +
+            "  \"message\": \"Role does not exist.\",\n" +
+            "  \"httpStatus\": \"NOT_FOUND\",\n" +
+            "  \"localDateTime\": \"2024-01-01T00:00:00.0000000\"\n" +
+            "}";
+
     public static final String VALIDATION_EXCEPTION_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": false,\n" +
             "  \"message\": \"Invalid Input(s)\",\n" +

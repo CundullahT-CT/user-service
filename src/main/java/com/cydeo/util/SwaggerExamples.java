@@ -172,7 +172,7 @@ public class SwaggerExamples {
             "    {\n" +
             "      \"errorField\": \"userName\",\n" +
             "      \"rejectedValue\": \"john.doe.123456@email.com\",\n" +
-            "      \"reason\": \"Username length should be min 2, max 16.\"\n" +
+            "      \"reason\": \"Username length should be min 3, max 16.\"\n" +
             "    }\n" +
             "  ]\n" +
             "}";

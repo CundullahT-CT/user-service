@@ -61,4 +61,5 @@ public class OpenAPI3Configuration {
                         .tokenUrl(protocolUrl + "/token")
                         .scopes(new Scopes().addString("openid", ""));
         }
+
 }

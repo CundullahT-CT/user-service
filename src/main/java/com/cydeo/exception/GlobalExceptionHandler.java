@@ -4,7 +4,6 @@ import com.cydeo.dto.wrapper.ExceptionWrapper;
 import com.cydeo.dto.wrapper.ValidationExceptionWrapper;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +29,7 @@ public class GlobalExceptionHandler {
                         .success(false)
                         .message("Action failed: An error occurred!")
                         .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .localDateTime(LocalDateTime.now())
                         .build());
     }
 
@@ -39,6 +40,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message(exception.getMessage())
                 .httpStatus(HttpStatus.NOT_FOUND)
+                .localDateTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exceptionWrapper);
     }
@@ -50,6 +52,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message(exception.getMessage())
                 .httpStatus(HttpStatus.CONFLICT)
+                .localDateTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exceptionWrapper);
     }
@@ -61,6 +64,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message(exception.getMessage())
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .localDateTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionWrapper);
     }
@@ -72,6 +76,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message(exception.getMessage())
                 .httpStatus(HttpStatus.FORBIDDEN)
+                .localDateTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionWrapper);
     }
@@ -83,6 +88,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message(exception.getMessage())
                 .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                .localDateTime(LocalDateTime.now())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionWrapper);
     }
@@ -94,6 +100,7 @@ public class GlobalExceptionHandler {
                 .success(false)
                 .message("Invalid Input(s)")
                 .httpStatus(HttpStatus.BAD_REQUEST)
+                .localDateTime(LocalDateTime.now())
                 .build();
 
         List<ValidationExceptionWrapper> validationExceptions = collectValidationExceptions(exception);

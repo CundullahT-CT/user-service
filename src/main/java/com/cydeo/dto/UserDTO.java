@@ -24,16 +24,16 @@ public class UserDTO {
     private Long id;
 
     @NotBlank(message = "Firstname is required.")
-    @Size(min = 3, max = 16, message = "Firstname length should be min 2, max 16.")
+    @Size(min = 3, max = 16, message = "Firstname length should be min 3, max 16.")
     private String firstName;
 
     @NotBlank(message = "Lastname is required.")
-    @Size(min = 3, max = 16, message = "Lastname length should be min 2, max 16.")
+    @Size(min = 3, max = 16, message = "Lastname length should be min 3, max 16.")
     private String lastName;
 
     @NotBlank(message = "Username is required.")
-    @Email(message = "Username should in valid email format.")
-    @Size(min = 3, max = 16, message = "Username length should be min 2, max 16.")
+    @Email(message = "Username should be in valid email format.")
+    @Size(min = 3, max = 16, message = "Username length should be min 3, max 16.")
     private String userName;
 
     @NotBlank(message = "Password is required.")

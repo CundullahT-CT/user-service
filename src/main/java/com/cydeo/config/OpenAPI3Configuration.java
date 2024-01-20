@@ -39,7 +39,6 @@ public class OpenAPI3Configuration {
 
         private SecurityScheme createOAuthScheme() {
                 OAuthFlows flows = createOAuthFlows();
-
                 return new SecurityScheme()
                         .type(SecurityScheme.Type.OAUTH2)
                         .flows(flows);
@@ -47,19 +46,20 @@ public class OpenAPI3Configuration {
 
         private OAuthFlows createOAuthFlows() {
                 OAuthFlow flow = createAuthorizationCodeFlow();
-
                 return new OAuthFlows()
                         .authorizationCode(flow);
         }
 
         private OAuthFlow createAuthorizationCodeFlow() {
-                var protocolUrl = String.format(PROTOCOL_URL_FORMAT,
+
+                String protocolUrl = String.format(PROTOCOL_URL_FORMAT,
                         keycloakProperties.getAuthServerUrl(), keycloakProperties.getRealm());
 
                 return new OAuthFlow()
                         .authorizationUrl(protocolUrl + "/auth")
                         .tokenUrl(protocolUrl + "/token")
                         .scopes(new Scopes().addString("openid", ""));
+
         }
 
 }

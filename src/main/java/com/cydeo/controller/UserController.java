@@ -41,7 +41,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User is created.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
-                            examples = @ExampleObject(value = SwaggerExamples.USER_CREATE_RESPONSE_SINGLE_EXAMPLE))),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_CREATE_RESPONSE_EXAMPLE))),
             @ApiResponse(responseCode = "409", description = "User already exists.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.USER_ALREADY_EXISTS_RESPONSE_EXAMPLE))),
@@ -147,7 +147,7 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User is successfully updated.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
-                            examples = @ExampleObject(value = SwaggerExamples.USER_CHECK_RESPONSE_SINGLE_EXAMPLE))),
+                            examples = @ExampleObject(value = SwaggerExamples.USER_UPDATE_RESPONSE_EXAMPLE))),
             @ApiResponse(responseCode = "404", description = "User does not exist.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ExceptionWrapper.class),
                             examples = @ExampleObject(value = SwaggerExamples.USER_NOT_FOUND_RESPONSE_EXAMPLE))),

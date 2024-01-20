@@ -25,10 +25,27 @@ public class SwaggerExamples {
             "  \"gender\": \"MALE\"\n" +
             "}";
 
-    public static final String USER_CREATE_RESPONSE_SINGLE_EXAMPLE = "{\n" +
+    public static final String USER_CREATE_RESPONSE_EXAMPLE = "{\n" +
+            "  \"success\": true,\n" +
+            "  \"statusCode\": \"CREATED\",\n" +
+            "  \"message\": \"User is successfully created.\",\n" +
+            "  \"data\": {\n" +
+            "    \"firstName\": \"John\",\n" +
+            "    \"lastName\": \"Doe\",\n" +
+            "    \"userName\": \"john.doe@example.com\",\n" +
+            "    \"phone\": \"1234567890\",\n" +
+            "    \"enabled\": true,\n" +
+            "    \"role\": {\n" +
+            "      \"description\": \"Employee\"\n" +
+            "    },\n" +
+            "    \"gender\": \"MALE\"\n" +
+            "  }\n" +
+            "}";
+
+    public static final String USER_UPDATE_RESPONSE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"User is successfully created.\",\n" +
+            "  \"message\": \"User is successfully updated.\",\n" +
             "  \"data\": {\n" +
             "    \"firstName\": \"John\",\n" +
             "    \"lastName\": \"Doe\",\n" +
@@ -92,7 +109,7 @@ public class SwaggerExamples {
     public static final String USER_CHECK_RESPONSE_SINGLE_EXAMPLE = "{\n" +
             "  \"success\": true,\n" +
             "  \"statusCode\": \"OK\",\n" +
-            "  \"message\": \"User is successfully created.\",\n" +
+            "  \"message\": \"User exists.\",\n" +
             "  \"data\": true\n" +
             "}";
 

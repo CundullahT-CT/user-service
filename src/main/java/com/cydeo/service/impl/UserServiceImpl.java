@@ -2,8 +2,8 @@ package com.cydeo.service.impl;
 
 import com.cydeo.client.ProjectClient;
 import com.cydeo.client.TaskClient;
-import com.cydeo.dto.ProjectResponseDTO;
-import com.cydeo.dto.TaskResponseDTO;
+import com.cydeo.dto.ProjectResponse;
+import com.cydeo.dto.TaskResponse;
 import com.cydeo.dto.UserDTO;
 import com.cydeo.entity.User;
 import com.cydeo.exception.*;
@@ -145,7 +145,7 @@ public class UserServiceImpl implements UserService {
 
         Integer projectCount = 0;
 
-        ResponseEntity<ProjectResponseDTO> projectResponse = projectClient.getNonCompletedCountByAssignedManager(getAccessToken(), username);
+        ResponseEntity<ProjectResponse> projectResponse = projectClient.getNonCompletedCountByAssignedManager(getAccessToken(), username);
 
         if (Objects.requireNonNull(projectResponse.getBody()).isSuccess()) {
             projectCount = projectResponse.getBody().getData();
@@ -163,7 +163,7 @@ public class UserServiceImpl implements UserService {
 
         Integer taskCount = 0;
 
-        ResponseEntity<TaskResponseDTO> taskResponse = taskClient.getNonCompletedCountByAssignedEmployee(getAccessToken(), username);
+        ResponseEntity<TaskResponse> taskResponse = taskClient.getNonCompletedCountByAssignedEmployee(getAccessToken(), username);
 
         if (Objects.requireNonNull(taskResponse.getBody()).isSuccess()) {
             taskCount = taskResponse.getBody().getData();

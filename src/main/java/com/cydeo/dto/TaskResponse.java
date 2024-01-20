@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProjectResponseDTO {
+public class TaskResponse {
 
     private boolean success;
     private HttpStatus statusCode;

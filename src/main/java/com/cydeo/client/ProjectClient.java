@@ -1,6 +1,6 @@
 package com.cydeo.client;
 
-import com.cydeo.dto.ProjectResponseDTO;
+import com.cydeo.dto.ProjectResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -15,6 +15,6 @@ public interface ProjectClient {
     @GetMapping("/api/v1/project/count/manager/{assignedManager}")
     @CircuitBreaker(name = "project-service")
     @Retry(name = "project-service")
-    ResponseEntity<ProjectResponseDTO> getNonCompletedCountByAssignedManager(@RequestHeader(value = "Authorization") String authorizationHeader, @PathVariable("assignedManager") String assignedManager);
+    ResponseEntity<ProjectResponse> getNonCompletedCountByAssignedManager(@RequestHeader(value = "Authorization") String authorizationHeader, @PathVariable("assignedManager") String assignedManager);
 
 }

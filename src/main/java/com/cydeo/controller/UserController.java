@@ -122,7 +122,7 @@ public class UserController {
 
     @RolesAllowed({"Admin", "Manager"})
     @GetMapping("/check/{username}")
-    @Operation(summary = "Check if user exists by username.")
+    @Operation(summary = "Check if a user exists or not by username.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User exists.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ResponseWrapper.class),
